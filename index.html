@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HAHAHAHAHH</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #0000AA;
+      color: white;
+      font-family: "Courier New", monospace;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+      cursor: none;
+    }
+
+    .bsod {
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: lightgray;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    .blinking {
+      animation: blink 1s step-start infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .pin-container {
+      margin-top: 30px;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1rem;
+      width: 200px;
+      background: #000044;
+      color: white;
+      border: 1px solid white;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: darkred;
+      color: white;
+      border: none;
+      cursor: not-allowed;
+    }
+
+    .error {
+      color: yellow;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false" onkeydown="return false">
+  <div class="bsod">
+    <h1>💥 SYSTEM LOCKED 💥</h1>
+    <p>
+      Sistem telah dikunci akibat kesalahan fatal.<br>
+      Untuk keluar, masukkan PIN pengaman Anda:<br>
+    </p>
+
+    <div class="pin-container">
+      <input type="password" id="pin" placeholder="Masukkan PIN..." />
+      <button disabled>Kirim</button>
+      <div class="error" id="error-msg">PIN salah. Sistem tetap terkunci.</div>
+    </div>
+
+    <p style="margin-top: 40px;">
+      <span class="blinking">_</span>
+    </p>
+  </div>
+
+  <!-- Suara error looping -->
+  <audio autoplay loop>
+    <source src="https://www.myinstants.com/media/sounds/windows-xp-error.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Cegah keluar dari halaman
+    history.pushState(null, null, location.href);
+    window.onpopstate = () => history.go(1);
+
+    // Cegah keyboard & mouse
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        document.getElementById("error-msg").innerText = "PIN salah. Sistem tetap terkunci.";
+      } else {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('mousedown', e => e.preventDefault());
+    document.addEventListener('touchstart', e => e.preventDefault());
+
+    // Tombol kirim tetap tidak berfungsi
+    document.querySelector("button").addEventListener("click", () => {
+      document.getElementById("error-msg").innerText = "PIN salah. Sistem tetap terkunci.";
+    });
+
+    // 🧨 AUTO MASUK FULLSCREEN
+    window.addEventListener('load', () => {
+      const goFull = () => {
+        const el = document.documentElement;
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else if (el.msRequestFullscreen) el.msRequestFullscreen();
+      };
+      setTimeout(goFull, 500); // beri delay biar tidak dicancel langsung
+    });
+  </script>
+</body>
+</html>
